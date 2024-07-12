@@ -1,0 +1,400 @@
+<html><head><base href="https://rielec.io/api-docs/full"><title>RIELEC Full API Documentation (Continued)</title>
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px;
+  overflow-y: auto;
+  position: fixed;
+  height: 100%;
+}
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  max-width: 800px;
+  margin-left: 270px;
+}
+h1, h2, h3, h4 {
+  color: #2c3e50;
+}
+.sidebar h2 {
+  color: #ecf0f1;
+}
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+.sidebar a {
+  color: #ecf0f1;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  text-decoration: underline;
+}
+code {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: block;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+.endpoint {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+.method {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.get { background-color: #61affe; color: #fff; }
+.post { background-color: #49cc90; color: #fff; }
+.put { background-color: #fca130; color: #fff; }
+.delete { background-color: #f93e3e; color: #fff; }
+.patch { background-color: #50e3c2; color: #fff; }
+.response, .request {
+  margin-top: 10px;
+}
+.response h4, .request h4 {
+  margin-bottom: 5px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>API Sections</h2>
+  <ul>
+    <li><a href="#rate-limiting">Rate Limiting</a></li>
+    <li><a href="#webhooks">Webhooks</a></li>
+    <li><a href="#scaling">Auto-scaling</a></li>
+    <li><a href="#logs">Logs</a></li>
+    <li><a href="#networking">Networking</a></li>
+    <li><a href="#backups">Backups</a></li>
+    <li><a href="#integrations">Integrations</a></li>
+    <li><a href="#advanced-metrics">Advanced Metrics</a></li>
+  </ul>
+</div>
+
+<div class="content">
+  <h1>RIELEC Full API Documentation (Continued)</h1>
+
+  <section id="rate-limiting">
+    <h2>Rate Limiting (Continued)</h2>
+    <p>Rate limit information is included in the response headers:</p>
+    <code>
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1623967345
+    </code>
+    <p>If you exceed the rate limit, you'll receive a 429 Too Many Requests response.</p>
+  </section>
+
+  <section id="webhooks">
+    <h2>Webhooks</h2>
+    <p>RIELEC supports webhooks for real-time notifications of events in your account.</p>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /webhooks</h3>
+      <p>Create a new webhook subscription.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "url": "https://your-server.com/webhook",
+  "events": ["instance.created", "instance.deleted", "instance.started", "instance.stopped"],
+  "secret": "your_webhook_secret"
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "id": "whk-123abc",
+  "url": "https://your-server.com/webhook",
+  "events": ["instance.created", "instance.deleted", "instance.started", "instance.stopped"],
+  "created_at": "2023-06-17T16:00:00Z"
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="scaling">
+    <h2>Auto-scaling</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /instance-groups/{group_id}/auto-scaling</h3>
+      <p>Configure auto-scaling for an instance group.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "min_instances": 2,
+  "max_instances": 10,
+  "target_cpu_utilization": 70,
+  "cooldown_period": 300
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "group_id": "grp-789ghi",
+  "auto_scaling": {
+    "min_instances": 2,
+    "max_instances": 10,
+    "target_cpu_utilization": 70,
+    "cooldown_period": 300,
+    "enabled": true
+  }
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="logs">
+    <h2>Logs</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method get">GET</span> /instances/{instance_id}/logs</h3>
+      <p>Retrieve logs for a specific instance.</p>
+      <h4>Query Parameters:</h4>
+      <table>
+        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+        <tr><td>start_time</td><td>string</td><td>Start time for logs (ISO 8601 format)</td></tr>
+        <tr><td>end_time</td><td>string</td><td>End time for logs (ISO 8601 format)</td></tr>
+        <tr><td>limit</td><td>integer</td><td>Maximum number of log entries to return (default: 100, max: 1000)</td></tr>
+      </table>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "instance_id": "inst-123abc",
+  "logs": [
+    {
+      "timestamp": "2023-06-17T10:30:00Z",
+      "level": "INFO",
+      "message": "Application started successfully"
+    },
+    {
+      "timestamp": "2023-06-17T10:35:15Z",
+      "level": "ERROR",
+      "message": "Database connection failed"
+    },
+    ...
+  ]
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="networking">
+    <h2>Networking</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /networks</h3>
+      <p>Create a new network.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "name": "app-network",
+  "cidr": "172.18.0.0/16"
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "id": "net-456def",
+  "name": "app-network",
+  "cidr": "172.18.0.0/16",
+  "created_at": "2023-06-17T17:30:00Z"
+}
+        </code>
+      </div>
+    </div>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /instances/{instance_id}/network</h3>
+      <p>Connect an instance to a network.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "network_id": "net-456def"
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "instance_id": "inst-123abc",
+  "network_id": "net-456def",
+  "ip_address": "172.18.0.5"
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="backups">
+    <h2>Backups</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /instances/{instance_id}/backups</h3>
+      <p>Create a backup of an instance.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "name": "pre-update-backup",
+  "description": "Backup before major update"
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "id": "bkp-789ghi",
+  "instance_id": "inst-123abc",
+  "name": "pre-update-backup",
+  "description": "Backup before major update",
+  "status": "creating",
+  "created_at": "2023-06-17T18:45:00Z"
+}
+        </code>
+      </div>
+    </div>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /instances/{instance_id}/restore</h3>
+      <p>Restore an instance from a backup.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "backup_id": "bkp-789ghi"
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "instance_id": "inst-123abc",
+  "backup_id": "bkp-789ghi",
+  "status": "restoring"
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="integrations">
+    <h2>Integrations</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method post">POST</span> /integrations</h3>
+      <p>Create a new integration.</p>
+      <div class="request">
+        <h4>Request Body:</h4>
+        <code>
+{
+  "type": "slack",
+  "config": {
+    "webhook_url": "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+  }
+}
+        </code>
+      </div>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "id": "int-101jkl",
+  "type": "slack",
+  "status": "active",
+  "created_at": "2023-06-17T19:30:00Z"
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <section id="advanced-metrics">
+    <h2>Advanced Metrics</h2>
+    
+    <div class="endpoint">
+      <h3><span class="method get">GET</span> /instances/{instance_id}/advanced-metrics</h3>
+      <p>Retrieve advanced metrics for a specific instance.</p>
+      <h4>Query Parameters:</h4>
+      <table>
+        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+        <tr><td>start_time</td><td>string</td><td>Start time for metrics (ISO 8601 format)</td></tr>
+        <tr><td>end_time</td><td>string</td><td>End time for metrics (ISO 8601 format)</td></tr>
+        <tr><td>metrics</td><td>string</td><td>Comma-separated list of advanced metrics (e.g., disk_iops,network_packets,etc)</td></tr>
+      </table>
+      <div class="response">
+        <h4>Response:</h4>
+        <code>
+{
+  "instance_id": "inst-123abc",
+  "metrics": {
+    "disk_iops": [
+      {"timestamp": "2023-06-17T20:00:00Z", "read": 1500, "write": 500},
+      {"timestamp": "2023-06-17T20:01:00Z", "read": 1200, "write": 600},
+      ...
+    ],
+    "network_packets": [
+      {"timestamp": "2023-06-17T20:00:00Z", "in": 10000, "out": 8000},
+      {"timestamp": "2023-06-17T20:01:00Z", "in": 12000, "out": 9000},
+      ...
+    ]
+  }
+}
+        </code>
+      </div>
+    </div>
+  </section>
+
+  <p>This concludes the full RIELEC API documentation. For any questions or support, please contact our <a href="https://rielec.io/support">support team</a>.</p>
+
+</div>
+</body>
+</html>

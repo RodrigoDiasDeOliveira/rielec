@@ -1,0 +1,237 @@
+<html><head><base href="https://rielec.ai" /><title>Implementación Full Stack de RIELEC (Español)</title><style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+  h1, h2, h3 { color: #2c3e50; }
+  pre { background-color: #f4f4f4; border: 1px solid #ddd; border-left: 3px solid #f36d33; color: #666; page-break-inside: avoid; font-family: monospace; font-size: 15px; line-height: 1.6; margin-bottom: 1.6em; max-width: 100%; overflow: auto; padding: 1em 1.5em; display: block; word-wrap: break-word; }
+  .file-name { font-weight: bold; margin-top: 20px; }
+  .note { background-color: #ffffd7; border-left: 4px solid #ffeb3b; padding: 10px; margin-bottom: 20px; }
+</style></head><body>
+<h1>Implementación Full Stack de RIELEC</h1>
+
+<div class="note">
+Nota: Esta guía explica cómo integrar el frontend de React con el backend de Spring Boot para el proyecto RIELEC.
+</div>
+
+<h2>1. Modificaciones del Backend</h2>
+
+<p>Primero, necesitamos hacer algunas modificaciones en el backend para habilitar CORS y manejar los SSE para las actualizaciones del estado de las máquinas.</p>
+
+<div class="file-name">WebConfig.java</div>
+<pre>
+package com.rielec.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+}
+</pre>
+
+<div class="file-name">MachineStatusController.java</div>
+<pre>
+package com.rielec.controller;
+
+import com.rielec.event.MachineStatusChangeEvent;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+@RestController
+public class MachineStatusController {
+
+    private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+
+    @GetMapping("/api/machine-status-events")
+    public SseEmitter handleSse() {
+        SseEmitter emitter = new SseEmitter();
+        this.emitters.add(emitter);
+
+        emitter.onCompletion(() -> this.emitters.remove(emitter));
+        emitter.onTimeout(() -> this.emitters.remove(emitter));
+
+        return emitter;
+    }
+
+    public void sendMachineStatusUpdate(MachineStatusChangeEvent event) {
+        emitters.forEach(emitter -> {
+            try {
+                emitter.send(SseEmitter.event().data(event));
+            } catch (IOException e) {
+                emitter.complete();
+                emitters.remove(emitter);
+            }
+        });
+    }
+}
+</pre>
+
+<h2>2. Integración del Frontend</h2>
+
+<p>Ahora, vamos a integrar el frontend de React con el backend de Spring Boot.</p>
+
+<div class="file-name">package.json</div>
+<pre>
+{
+  "name": "rielec-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+</pre>
+
+<div class="file-name">src/index.js</div>
+<pre>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Router>
+      <App />
+    </Router>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+</pre>
+
+<div class="file-name">src/App.js</div>
+<pre>
+import React from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
+import InstanceList from './components/InstanceList';
+import InstanceForm from './components/InstanceForm';
+import MachineList from './components/MachineList';
+import MachineForm from './components/MachineForm';
+import MachineStatusUpdater from './components/MachineStatusUpdater';
+
+function App() {
+  return (
+    <div className="App">
+      <nav>
+        <ul>
+          <li><Link to="/">Inicio</Link></li>
+          <li><Link to="/instances">Instancias</Link></li>
+          <li><Link to="/machines">Máquinas</Link></li>
+        </ul>
+      </nav>
+
+      <Switch>
+        <Route exact path="/">
+          <h1>Bienvenido al Sistema de Gestión RIELEC</h1>
+        </Route>
+        <Route path="/instances">
+          <InstanceList />
+          <InstanceForm />
+        </Route>
+        <Route path="/machines">
+          <MachineList />
+          <MachineForm />
+        </Route>
+      </Switch>
+
+      <MachineStatusUpdater />
+    </div>
+  );
+}
+
+export default App;
+</pre>
+
+<h2>3. Ejecutando la Aplicación</h2>
+
+<p>Para ejecutar la aplicación full stack:</p>
+
+<ol>
+  <li>Inicie el backend de Spring Boot:
+    <pre>
+cd backend
+./mvnw spring-boot:run
+    </pre>
+  </li>
+  <li>Inicie el frontend de React:
+    <pre>
+cd frontend
+npm start
+    </pre>
+  </li>
+</ol>
+
+<p>El backend se ejecutará en <code>http://localhost:8080</code> y el frontend se ejecutará en <code>http://localhost:3000</code>.</p>
+
+<h2>4. Pruebas</h2>
+
+<p>Para asegurarse de que todo funciona correctamente:</p>
+
+<ol>
+  <li>Abra <code>http://localhost:3000</code> en su navegador.</li>
+  <li>Navegue a las páginas de Instancias y Máquinas.</li>
+  <li>Intente crear, actualizar y eliminar instancias y máquinas.</li>
+  <li>Use la API del backend directamente (por ejemplo, con Postman) para actualizar el estado de una máquina y verifique que el frontend se actualiza en tiempo real.</li>
+</ol>
+
+<h2>5. Próximos Pasos</h2>
+
+<p>Para mejorar aún más su aplicación RIELEC:</p>
+
+<ul>
+  <li>Implemente autenticación y autorización de usuarios.</li>
+  <li>Agregue un manejo de errores más robusto y estados de carga.</li>
+  <li>Implemente una solución de gestión de estado más sofisticada (por ejemplo, Redux) si la aplicación se vuelve más compleja.</li>
+  <li>Agregue pruebas unitarias y de integración tanto para el frontend como para el backend.</li>
+  <li>Optimice el rendimiento, especialmente para la implementación de SSE si espera un gran número de usuarios concurrentes.</li>
+  <li>Implemente soluciones de registro y monitoreo tanto para el frontend como para el backend.</li>
+</ul>
+
+<p>Esta configuración proporciona una base sólida para su proyecto RIELEC, integrando un backend de Spring Boot con un frontend de React, incluyendo actualizaciones en tiempo real a través de Server-Sent Events.</p>
+
+</body></html>

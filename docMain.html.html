@@ -1,0 +1,153 @@
+<html><head><base href="https://rielec.io/documentation"><title>RIELEC Documentation - Docker Instance Management</title>
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+h1, h2, h3 {
+  color: #2c3e50;
+}
+.sidebar h2 {
+  color: #ecf0f1;
+}
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+.sidebar ul li {
+  margin-bottom: 10px;
+}
+.sidebar a {
+  color: #ecf0f1;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  text-decoration: underline;
+}
+code {
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: block;
+  padding: 10px;
+  white-space: pre-wrap;
+}
+.warning {
+  background-color: #fcf8e3;
+  border: 1px solid #faebcc;
+  color: #8a6d3b;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>Documentation</h2>
+  <ul>
+    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#instance-management">Instance Management</a></li>
+    <li><a href="#monitoring">Monitoring</a></li>
+    <li><a href="#api-reference">API Reference</a></li>
+    <li><a href="#integrations">Integrations</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ul>
+</div>
+
+<div class="content">
+  <h1>RIELEC Documentation</h1>
+  
+  <section id="getting-started">
+    <h2>Getting Started</h2>
+    <p>Welcome to RIELEC, your advanced Docker Instance Management solution. This guide will help you get up and running quickly.</p>
+    
+    <h3>1. Sign Up</h3>
+    <p>If you haven't already, <a href="https://rielec.io/signup">sign up for a RIELEC account</a>.</p>
+    
+    <h3>2. Connect Your Docker Environment</h3>
+    <p>To connect your Docker environment to RIELEC, you'll need to install our agent. Run the following command in your terminal:</p>
+    <code>curl -sSL https://get.rielec.io | sudo bash</code>
+    
+    <div class="warning">
+      <strong>Note:</strong> Always verify the content of scripts before running them with sudo privileges.
+    </div>
+    
+    <h3>3. Configure Your Dashboard</h3>
+    <p>Once the agent is installed, log in to your RIELEC dashboard and follow the prompts to set up your first instance group.</p>
+  </section>
+  
+  <section id="instance-management">
+    <h2>Instance Management</h2>
+    <p>RIELEC provides powerful tools for managing your Docker instances:</p>
+    <ul>
+      <li><strong>Create Instances:</strong> Use our intuitive interface to spin up new Docker instances with just a few clicks.</li>
+      <li><strong>Instance Groups:</strong> Organize your instances into logical groups for easier management.</li>
+      <li><strong>Scaling:</strong> Automatically scale your instances based on predefined rules or manually adjust as needed.</li>
+    </ul>
+  </section>
+  
+  <section id="monitoring">
+    <h2>Monitoring</h2>
+    <p>Stay informed about the health and performance of your Docker instances:</p>
+    <ul>
+      <li><strong>Real-time Metrics:</strong> Monitor CPU, memory, network, and disk usage in real-time.</li>
+      <li><strong>Custom Alerts:</strong> Set up custom alerts based on performance thresholds or specific events.</li>
+      <li><strong>Log Analysis:</strong> Centralized log collection and analysis for easier troubleshooting.</li>
+    </ul>
+  </section>
+  
+  <section id="api-reference">
+    <h2>API Reference</h2>
+    <p>RIELEC provides a comprehensive RESTful API for programmatic access to your Docker instances:</p>
+    <code>
+GET /api/v1/instances - List all instances
+POST /api/v1/instances - Create a new instance
+GET /api/v1/instances/{id} - Get details of a specific instance
+PUT /api/v1/instances/{id} - Update an instance
+DELETE /api/v1/instances/{id} - Delete an instance
+    </code>
+    <p>For full API documentation, visit our <a href="https://rielec.io/api-docs">API Documentation</a> page.</p>
+  </section>
+  
+  <section id="integrations">
+    <h2>Integrations</h2>
+    <p>RIELEC integrates seamlessly with popular tools and platforms:</p>
+    <ul>
+      <li><strong>Kubernetes:</strong> Manage Kubernetes clusters alongside your Docker instances.</li>
+      <li><strong>CI/CD Tools:</strong> Integrate with Jenkins, GitLab CI, and other popular CI/CD tools.</li>
+      <li><strong>Cloud Providers:</strong> Native support for AWS, Azure, and Google Cloud Platform.</li>
+    </ul>
+  </section>
+  
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
+    <p>If you encounter any issues, try these steps:</p>
+    <ol>
+      <li>Check our <a href="https://rielec.io/status">Status Page</a> for any ongoing service disruptions.</li>
+      <li>Restart the RIELEC agent: <code>sudo systemctl restart rielec-agent</code></li>
+      <li>Review the agent logs: <code>sudo journalctl -u rielec-agent</code></li>
+      <li>If problems persist, contact our <a href="https://rielec.io/support">Support Team</a>.</li>
+    </ol>
+  </section>
+</div>
+</body>
+</html>

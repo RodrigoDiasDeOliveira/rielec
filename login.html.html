@@ -1,0 +1,168 @@
+<html><head><base href="https://rielec.io/login"><title>RIELEC - Login to Your Account</title>
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.login-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 30px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input[type="email"],
+input[type="password"] {
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #2980b9;
+}
+.forgot-password {
+  text-align: right;
+  margin-bottom: 20px;
+}
+.forgot-password a {
+  color: #3498db;
+  text-decoration: none;
+}
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+}
+.signup-link a {
+  color: #3498db;
+  text-decoration: none;
+}
+.signup-link a:hover {
+  text-decoration: underline;
+}
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.two-factor {
+  display: none;
+  margin-top: 20px;
+}
+.two-factor input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+<div class="login-container">
+  <h1>Login to RIELEC</h1>
+  <form id="loginForm">
+    <div id="errorMessage" class="error-message"></div>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+    
+    <div class="forgot-password">
+      <a href="https://rielec.io/forgot-password">Forgot password?</a>
+    </div>
+    
+    <button type="submit">Log In</button>
+    
+    <div class="two-factor" id="twoFactor">
+      <label for="twoFactorCode">Enter 2FA Code</label>
+      <input type="text" id="twoFactorCode" name="twoFactorCode">
+      <button type="button" id="verifyTwoFactor">Verify</button>
+    </div>
+  </form>
+  
+  <div class="signup-link">
+    Don't have an account? <a href="https://rielec.io/signup">Sign up</a>
+  </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorMessage = document.getElementById('errorMessage');
+  const twoFactor = document.getElementById('twoFactor');
+  
+  // Simulating login process
+  if (email && password) {
+    // In a real application, this would be an API call
+    setTimeout(() => {
+      if (email === "demo@rielec.io" && password === "demo123") {
+        errorMessage.textContent = "";
+        twoFactor.style.display = "block";
+      } else {
+        errorMessage.textContent = "Invalid email or password. Please try again.";
+      }
+    }, 1000);
+  } else {
+    errorMessage.textContent = "Please enter both email and password.";
+  }
+});
+
+document.getElementById('verifyTwoFactor').addEventListener('click', function() {
+  const twoFactorCode = document.getElementById('twoFactorCode').value;
+  const errorMessage = document.getElementById('errorMessage');
+  
+  // Simulating 2FA verification
+  if (twoFactorCode === "123456") {
+    errorMessage.textContent = "";
+    alert("Login successful! Redirecting to dashboard...");
+    // In a real application, this would redirect to the dashboard
+    setTimeout(() => {
+      window.location.href = "https://rielec.io/dashboard";
+    }, 1000);
+  } else {
+    errorMessage.textContent = "Invalid 2FA code. Please try again.";
+  }
+});
+</script>
+</body></html>

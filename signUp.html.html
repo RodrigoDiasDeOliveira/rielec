@@ -1,0 +1,147 @@
+<html><head><base href="https://rielec.io/signup"><title>Sign Up for RIELEC - Docker Instance Management</title>
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+h1, h2 {
+  color: #2c3e50;
+}
+form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover {
+  background-color: #2980b9;
+}
+.error {
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+.success {
+  color: #2ecc71;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Sign Up for RIELEC</h1>
+  <p>Get started with RIELEC and take control of your Docker instances today!</p>
+  
+  <form action="https://rielec.io/api/signup" method="POST">
+    <div>
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" required>
+    </div>
+    
+    <div>
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    
+    <div>
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    
+    <div>
+      <label for="company">Company Name (Optional)</label>
+      <input type="text" id="company" name="company">
+    </div>
+    
+    <div>
+      <label for="plan">Select Plan</label>
+      <select id="plan" name="plan" required>
+        <option value="">Choose a plan...</option>
+        <option value="starter">Starter - $49/month</option>
+        <option value="professional">Professional - $199/month</option>
+        <option value="enterprise">Enterprise - Contact Sales</option>
+      </select>
+    </div>
+    
+    <div>
+      <label>
+        <input type="checkbox" id="terms" name="terms" required>
+        I agree to the <a href="https://rielec.io/terms">Terms of Service</a> and <a href="https://rielec.io/privacy">Privacy Policy</a>
+      </label>
+    </div>
+    
+    <button type="submit">Create Account</button>
+  </form>
+  
+  <p>Already have an account? <a href="https://rielec.io/login">Log in here</a></p>
+</div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  // Here we would normally send the form data to the server
+  // For this simulation, we'll just show a success message
+  
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+  
+  // Simple client-side validation
+  if (data.password !== data.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+  
+  // Simulating server response
+  setTimeout(() => {
+    const successMessage = document.createElement('div');
+    successMessage.className = 'success';
+    successMessage.textContent = 'Account created successfully! Redirecting to dashboard...';
+    e.target.appendChild(successMessage);
+    
+    // Simulate redirect
+    setTimeout(() => {
+      window.location.href = 'https://rielec.io/dashboard';
+    }, 2000);
+  }, 1000);
+});
+</script>
+
+</body></html>

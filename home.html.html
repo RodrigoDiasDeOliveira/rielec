@@ -1,0 +1,262 @@
+<html><head><base href="https://rielec.io/"><title>RIELEC - Advanced Docker Instance Management</title>
+<style>
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f9fc;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem 0;
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+h1, h2, h3 {
+  color: #2c3e50;
+}
+.hero {
+  background-color: #3498db;
+  color: white;
+  text-align: center;
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('docker-bg.png') repeat;
+  opacity: 0.1;
+  z-index: 1;
+}
+.hero * {
+  position: relative;
+  z-index: 2;
+}
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+.cta-button {
+  display: inline-block;
+  background-color: #e74c3c;
+  color: white;
+  padding: 15px 30px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.cta-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+}
+.features {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+.feature {
+  flex-basis: 30%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.feature:hover {
+  transform: translateY(-5px);
+}
+.feature h3 {
+  color: #3498db;
+}
+footer {
+  background-color: #34495e;
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+.testimonials {
+  background-color: #ecf0f1;
+  padding: 4rem 0;
+  text-align: center;
+}
+.testimonial {
+  max-width: 800px;
+  margin: 0 auto;
+  font-style: italic;
+}
+.integrations {
+  text-align: center;
+  margin-top: 4rem;
+}
+.integration-logos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2rem;
+}
+.integration-logos img {
+  max-width: 120px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+.integration-logos img:hover {
+  transform: scale(1.1);
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://rielec.io/documentation">Documentation</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://rielec.io/login">Login</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="container">
+    <h1>RIELEC</h1>
+    <p>Revolutionize Your Docker Management</p>
+    <a href="https://rielec.io/signup" class="cta-button floating">Start Free Trial</a>
+  </div>
+</div>
+
+<div class="container">
+  <section id="features">
+    <h2>Key Features</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>AI-Powered Optimization</h3>
+        <p>Our advanced AI algorithms continuously optimize your Docker instances for peak performance and cost-efficiency.</p>
+      </div>
+      <div class="feature">
+        <h3>Real-time Monitoring</h3>
+        <p>Get instant insights with our comprehensive dashboard and customizable alerts for proactive management.</p>
+      </div>
+      <div class="feature">
+        <h3>Multi-Cloud Integration</h3>
+        <p>Seamlessly manage Docker instances across multiple cloud providers with our unified interface.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About RIELEC</h2>
+    <p>RIELEC is at the forefront of Docker instance management technology. Our platform combines cutting-edge AI, robust security measures, and an intuitive user interface to provide an unparalleled Docker management experience. Whether you're a startup or an enterprise, RIELEC scales with your needs, ensuring optimal performance and cost-efficiency.</p>
+  </section>
+
+  <section class="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial">
+      <p>"RIELEC has transformed our DevOps workflow. The AI-driven optimizations have cut our cloud costs by 40% while improving performance. It's a game-changer!"</p>
+      <p><strong>- Alex Rodriguez, CTO at InnoTech Solutions</strong></p>
+    </div>
+  </section>
+
+  <section class="integrations">
+    <h2>Seamless Integrations</h2>
+    <p>RIELEC works flawlessly with your existing infrastructure</p>
+    <div class="integration-logos">
+      <img src="kubernetes-logo.png" alt="Kubernetes logo" width="100" height="100">
+      <img src="aws-logo.png" alt="AWS logo" width="100" height="100">
+      <img src="azure-logo.png" alt="Azure logo" width="100" height="100">
+      <img src="gcp-logo.png" alt="Google Cloud Platform logo" width="100" height="100">
+      <img src="gitlab-logo.png" alt="GitLab logo" width="100" height="100">
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Flexible Pricing Plans</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Startup</h3>
+        <p>Perfect for small teams and projects</p>
+        <ul>
+          <li>Up to 20 instances</li>
+          <li>Basic AI optimization</li>
+          <li>Email support</li>
+        </ul>
+        <p><strong>$99/month</strong></p>
+        <a href="https://rielec.io/signup?plan=startup" class="cta-button">Get Started</a>
+      </div>
+      <div class="feature">
+        <h3>Business</h3>
+        <p>Ideal for growing companies</p>
+        <ul>
+          <li>Up to 100 instances</li>
+          <li>Advanced AI optimization</li>
+          <li>24/7 priority support</li>
+        </ul>
+        <p><strong>$499/month</strong></p>
+        <a href="https://rielec.io/signup?plan=business" class="cta-button">Choose Plan</a>
+      </div>
+      <div class="feature">
+        <h3>Enterprise</h3>
+        <p>For large-scale operations</p>
+        <ul>
+          <li>Unlimited instances</li>
+          <li>Custom AI models</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <p><strong>Custom pricing</strong></p>
+        <a href="https://rielec.io/contact" class="cta-button">Contact Sales</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2023 RIELEC. All rights reserved.</p>
+    <nav>
+      <ul>
+        <li><a href="https://rielec.io/privacy">Privacy Policy</a></li>
+        <li><a href="https://rielec.io/terms">Terms of Service</a></li>
+        <li><a href="https://rielec.io/support">Support</a></li>
+        <li><a href="https://blog.rielec.io">Blog</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body></html>
